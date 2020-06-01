@@ -2,6 +2,7 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 
 import routes from './routes'
+import { firebaseAuth } from 'src/boot/firebase'
 
 Vue.use(VueRouter)
 
@@ -14,7 +15,7 @@ Vue.use(VueRouter)
  * with the Router instance.
  */
 
-export default function (/* { store, ssrContext } */) {
+export default function ( { store, ssrContext } ) {
   const Router = new VueRouter({
     scrollBehavior: () => ({ x: 0, y: 0 }),
     routes,
@@ -24,6 +25,23 @@ export default function (/* { store, ssrContext } */) {
     // quasar.conf.js -> build -> publicPath
     mode: process.env.VUE_ROUTER_MODE,
     base: process.env.VUE_ROUTER_BASE
+  })
+
+  Router.beforeEach(async (to,from,next) => {
+    const user = await new Promise( (resolve,reject) => {
+      firebaseAuth.onAuthStateChanged(user => {
+        // store.dispatch('myFirebaseUserAction', user.toJSON())
+        resolve(user)
+      })
+    })
+    const requiresAuth = to.matched.some(recordedRoute => recordedRoute.meta.requiresAuth)
+    // console.log("auth",requiresAuth)
+    if (requiresAuth && !user) {
+      next('login')
+    }else{
+      next();
+    }
+    
   })
 
   return Router

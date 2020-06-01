@@ -1,7 +1,7 @@
 <template>
-  <div class="absolute-center q-pa-md">
+  <div class="q-pa-md">
     <div class="row">
-      <q-card class="col-12">
+      <q-card class="fixed-center col-12 col-sm-8 col-md-6">
         <q-tabs
           v-model="tab"
           class="text-grey"
@@ -17,9 +17,52 @@
         <q-separator />
 
         <q-tab-panels v-model="tab" animated>
-          <q-tab-panel name="login">
-            <div class="q-pa-md">
+          <q-tab-panel name="login" class="row">
+            <div class="col-12 col-md-5 order-last order-md-first flex flex-center">
+              <div class="flex column">
+                <q-btn
+                  class="q-my-sm"
+                  color="red"
+                  icon="fab fa-google"
+                  align="left"
+                  label="Login with Google"
+                  @click="logWithSN('google')"
+                />
+                <q-btn
+                  class="q-my-sm"
+                  color="indigo-6"
+                  icon="fab fa-facebook"
+                  align="left"
+                  label="Login with Faceook"
+                  @click="logWithSN('facebook')"
+                />
+                <q-btn
+                  class="q-my-sm"
+                  color="blue-grey-10"
+                  icon="fab fa-github"
+                  align="left"
+                  label="Login with Github"
+                  @click="logWithSN('github')"
+                />
+                <q-btn
+                  class="q-my-sm"
+                  color="light-blue-4"
+                  icon="fab fa-twitter"
+                  align="left"
+                  label="Login with Twitter"
+                  @click="logWithSN('twitter')"
+                />
+              </div>
+            </div>
+            <div class="col-12 col-md-2 flex flex-center">
+              <div
+                style="font-size:.8em; padding:10px; border:solid 0.1em #b0b0b0;border-radius:50%;"
+                class="glossy or"
+              >OR</div>
+            </div>
+            <div class="col-12 col-md-5 order-first order-md-last">
               <q-form @submit="submitLogin" @reset="resetLogin" class="q-gutter-md">
+                <h6 class="no-margin q-pt-md flex justify-center">Sign in manually</h6>
                 <q-input
                   filled
                   type="email"
@@ -46,8 +89,13 @@
                 <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
                 <div>
-                  <q-btn :loading="loadingSubmit" label="Submit" type="submit" color="primary" />
+                  <q-btn :loading="loadingSubmit" label="LOGIN" type="submit" color="primary" />
                   <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+                </div>
+                <div>
+                  <small>
+                    <a href>Recuperar contraseña</a>
+                  </small>
                 </div>
               </q-form>
             </div>
@@ -126,13 +174,31 @@ export default {
     };
   },
   methods: {
-    ...mapActions("example", ["registerUser", "loginUser"]),
+    ...mapActions("example", [
+      "registerUser",
+      "loginUser",
+      "loginWithSocialNetwork"
+    ]),
+    logWithSN(network) {
+      this.loginWithSocialNetwork(network)
+        .then(res => {
+          this.$router.push("/");
+        })
+        .catch(err => {
+          this.$q.notify({
+            color: "red-5",
+            textColor: "white",
+            icon: "warning",
+            message: err.message
+          });
+        });
+    },
+
     submitRegister() {
       this.loadingRegister = true;
       this.registerUser(this.registerForm)
         .then(res => {
           this.loadingRegister = false;
-          console.log("se creó correctamente :D");
           this.$router.push("/");
         })
         .catch(err => {

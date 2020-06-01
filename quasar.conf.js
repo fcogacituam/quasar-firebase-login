@@ -15,6 +15,7 @@ module.exports = function (/* ctx */) {
       
       'axios',
       'firebase',
+      // 'router',
     ],
 
     // https://quasar.dev/quasar-cli/quasar-conf-js#Property%3A-css
