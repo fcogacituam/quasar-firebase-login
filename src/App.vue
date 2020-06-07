@@ -9,7 +9,7 @@ import { mapActions } from "vuex";
 export default {
   name: "App",
   methods: {
-    ...mapActions("example", ["handleAuthStateChanged"])
+    ...mapActions("firebase", ["handleAuthStateChanged"])
   },
   mounted() {
     this.handleAuthStateChanged();

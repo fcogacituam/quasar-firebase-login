@@ -10,8 +10,8 @@
           align="justify"
           narrow-indicator
         >
-          <q-tab name="login" label="Login" />
-          <q-tab name="register" label="Register" />
+          <q-tab name="login" :label="$t('login')" />
+          <q-tab name="register" :label="$t('register')" />
         </q-tabs>
 
         <q-separator />
@@ -25,7 +25,7 @@
                   color="red"
                   icon="fab fa-google"
                   align="left"
-                  label="Login with Google"
+                  :label="$t('loginwith')+' Google'"
                   @click="logWithSN('google')"
                 />
                 <q-btn
@@ -33,7 +33,7 @@
                   color="indigo-6"
                   icon="fab fa-facebook"
                   align="left"
-                  label="Login with Faceook"
+                  :label="$t('loginwith')+' Faceook'"
                   @click="logWithSN('facebook')"
                 />
                 <q-btn
@@ -41,7 +41,7 @@
                   color="blue-grey-10"
                   icon="fab fa-github"
                   align="left"
-                  label="Login with Github"
+                  :label="$t('loginwith')+' Github'"
                   @click="logWithSN('github')"
                 />
                 <q-btn
@@ -49,25 +49,25 @@
                   color="light-blue-4"
                   icon="fab fa-twitter"
                   align="left"
-                  label="Login with Twitter"
+                  :label="$t('loginwith')+' Twitter'"
                   @click="logWithSN('twitter')"
                 />
               </div>
             </div>
             <div class="col-12 col-md-2 flex flex-center">
               <div
-                style="font-size:.8em; padding:10px; border:solid 0.1em #b0b0b0;border-radius:50%;"
-                class="glossy or"
-              >OR</div>
+                style="font-size:.8em; height:35px; width:35px; border:solid 0.1em #b0b0b0;border-radius:50%;"
+                class="glossy or flex flex-center"
+              >{{$t('or')}}</div>
             </div>
             <div class="col-12 col-md-5 order-first order-md-last">
               <q-form @submit="submitLogin" @reset="resetLogin" class="q-gutter-md">
-                <h6 class="no-margin q-pt-md flex justify-center">Sign in manually</h6>
+                <h6 class="no-margin q-pt-md flex justify-center">{{$t('manuallysign')}}</h6>
                 <q-input
                   filled
                   type="email"
                   v-model="loginForm.email"
-                  label="Your email *"
+                  :label="$t('youremail')"
                   lazy-rules
                   :rules="[ val => val && val.length > 0 || 'Please type something']"
                 />
@@ -75,7 +75,7 @@
                   v-model="loginForm.password"
                   filled
                   :type="isPwd ? 'password' : 'text'"
-                  label="Your password *"
+                  :label="$t('yourpassword')"
                 >
                   <template v-slot:append>
                     <q-icon
@@ -89,12 +89,17 @@
                 <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
                 <div>
-                  <q-btn :loading="loadingSubmit" label="LOGIN" type="submit" color="primary" />
-                  <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+                  <q-btn
+                    :loading="loadingSubmit"
+                    :label="$t('login')"
+                    type="submit"
+                    color="primary"
+                  />
+                  <q-btn :label="$t('reset')" type="reset" color="primary" flat class="q-ml-sm" />
                 </div>
                 <div>
                   <small>
-                    <a href>Recuperar contraseña</a>
+                    <a href>{{$t('recoverypass')}}</a>
                   </small>
                 </div>
               </q-form>
@@ -108,7 +113,7 @@
                   filled
                   type="text"
                   v-model="registerForm.name"
-                  label="Your name *"
+                  :label="$t('yourname')"
                   lazy-rules
                   :rules="[ val => val && val.length > 0 || 'Please type your name']"
                 />
@@ -116,7 +121,7 @@
                   filled
                   type="email"
                   v-model="registerForm.email"
-                  label="Your email *"
+                  :label="$t('youremail')"
                   lazy-rules
                   :rules="[ val => val && val.length > 0 || 'Please type something']"
                 />
@@ -124,7 +129,7 @@
                   v-model="registerForm.password"
                   filled
                   :type="isPwd ? 'password' : 'text'"
-                  label="Your password *"
+                  :label="$t('yourpassword')"
                 >
                   <template v-slot:append>
                     <q-icon
@@ -138,8 +143,13 @@
                 <!-- <q-toggle v-model="accept" label="I accept the license and terms" /> -->
 
                 <div>
-                  <q-btn :loading="loadingRegister" label="Submit" type="submit" color="primary" />
-                  <q-btn label="Reset" type="reset" color="primary" flat class="q-ml-sm" />
+                  <q-btn
+                    :loading="loadingRegister"
+                    :label="$t('submit')"
+                    type="submit"
+                    color="primary"
+                  />
+                  <q-btn :label="$t('reset')" type="reset" color="primary" flat class="q-ml-sm" />
                 </div>
               </q-form>
             </div>
@@ -173,8 +183,9 @@ export default {
       // accept: false
     };
   },
+
   methods: {
-    ...mapActions("example", [
+    ...mapActions("firebase", [
       "registerUser",
       "loginUser",
       "loginWithSocialNetwork"

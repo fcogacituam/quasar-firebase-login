@@ -1,5 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
+    <Language v-show="false" />
     <q-page-container>
       <router-view />
     </q-page-container>
@@ -7,13 +8,12 @@
 </template>
 
 <script>
-import EssentialLink from "components/EssentialLink";
-
+import Language from "components/Language";
 export default {
   name: "MainLayout",
 
   components: {
-    EssentialLink
+    Language
   },
 
   data: function() {

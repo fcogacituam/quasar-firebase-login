@@ -1,8 +1,9 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 
-import example from './module-example'
-
+import firebase from './firebase'
+import websocket from './websocket'
+import users from './users'
 Vue.use(Vuex)
 
 /*
@@ -17,7 +18,9 @@ Vue.use(Vuex)
 export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
     modules: {
-      example
+      websocket,
+      firebase,
+      users
     },
 
     // enable strict mode (adds overhead!)

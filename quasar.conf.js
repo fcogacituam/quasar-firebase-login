@@ -12,9 +12,10 @@ module.exports = function (/* ctx */) {
     // --> boot files are part of "main.js"
     // https://quasar.dev/quasar-cli/cli-documentation/boot-files
     boot: [
-      
+      'i18n',
       'axios',
       'firebase',
+      'websocket'
       // 'router',
     ],
 
@@ -82,6 +83,13 @@ module.exports = function (/* ctx */) {
 
       // https://quasar.dev/quasar-cli/cli-documentation/handling-webpack
       extendWebpack (cfg) {
+        cfg.module.rules.push({
+          resourceQuery: /blockType=i18n/,
+          use: [
+            {loader: '@kazupon/vue-i18n-loader'},
+            {loader: 'yaml-loader'}
+          ]
+        })
       },
     },
 

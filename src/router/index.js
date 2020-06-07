@@ -28,12 +28,32 @@ export default function ( { store, ssrContext } ) {
   })
 
   Router.beforeEach(async (to,from,next) => {
+    console.log("WTF")
     const user = await new Promise( (resolve,reject) => {
-      firebaseAuth.onAuthStateChanged(user => {
+      firebaseAuth.onAuthStateChanged( user => {
         // store.dispatch('myFirebaseUserAction', user.toJSON())
+        console.log("ONAUTHSTATUSCHANGE",user)
+        if (user) {
+          store.dispatch('users/getUser',user.uid,{root:true}).then(res =>{
+            console.log("tengo el user desde db",res.data)
+            if (res.data) {
+              store.commit('firebase/setUserDetails',{
+                  name: res.data.name,
+                  email: res.data.email,
+                  photo: res.data.photo,
+                  userId: res.data.id,
+                  online:1,
+              })
+              resolve(user)
+            }
+          })
+        }
         resolve(user)
       })
     })
+
+
+    console.log("USER DESDE ROUTEs",user)
     const requiresAuth = to.matched.some(recordedRoute => recordedRoute.meta.requiresAuth)
     // console.log("auth",requiresAuth)
     if (requiresAuth && !user) {
